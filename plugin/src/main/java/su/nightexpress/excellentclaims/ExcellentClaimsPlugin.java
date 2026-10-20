@@ -28,6 +28,7 @@ import su.nightexpress.excellentclaims.rules.RulesBootstrap;
 import su.nightexpress.excellentclaims.rules.RulesModule;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.PluginDetails;
+import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.userdata.UserDataManager;
 
@@ -112,6 +113,8 @@ public class ExcellentClaimsPlugin extends NightPlugin implements ClaimPlugin {
 
     @Override
     public void reloadPlugin() {
+        this.langRegistry.loadLocale();
         this.core.reload();
+        this.langRegistry.complete();
     }
 }

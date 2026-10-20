@@ -35,11 +35,9 @@ public class Lang implements LangContainer {
         .text("text");
 
     public static final MessageLocale GREETING_CLAIM = LangEntry.builder("Greeting.Claim")
-        .titleMessage(
-            CommonPlaceholders.GENERIC_NAME,
-            TagWrappers.GRAY.wrap(ClaimsPlaceholders.GENERIC_DESCRIPTION),
-            10, 40
-        );
+            .actionBarMessage(
+                    CommonPlaceholders.GENERIC_NAME + " <gray>" + ClaimsPlaceholders.GENERIC_DESCRIPTION + "</gray>"
+            );
 
     public static final MessageLocale ERROR_NO_CLAIM_PERMISSION = LangEntry.builder("Core.Error.NoClaimPermission")
         .chatMessage(

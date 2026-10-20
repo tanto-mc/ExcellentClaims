@@ -55,9 +55,9 @@ public class LandOwnershipService {
             );
         }
 
-        if (!this.quotaValidator.canClaimMore(player)) {
+        if (!this.quotaValidator.canClaimMore(target)) {
             return ActionResult.fail(OwnershipLang.TRANSFER_TARGET_QUOTA_LIMIT, ctx -> ctx
-                .with(CommonPlaceholders.GENERIC_AMOUNT, () -> String.valueOf(this.quotaValidator.getMaxClaims(player)))
+                .with(CommonPlaceholders.GENERIC_AMOUNT, () -> String.valueOf(this.quotaValidator.getMaxClaims(target)))
                 .with(CommonPlaceholders.PLAYER.resolver(target))
             );
         }

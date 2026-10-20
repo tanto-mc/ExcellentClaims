@@ -26,12 +26,13 @@ subprojects {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/") { name = "papermc" }
         maven("https://repo.nightexpressdev.com/releases") { name = "nightexpress-releases" }
+        maven("https://repo.codemc.io/repository/maven-releases/") { name = "codemc-releases" }
         maven("https://jitpack.io") { name = "jitpack" }
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") { name = "placeholderapi" }
     }
 
     dependencies {
-        compileOnly("su.nightexpress.nightcore:main:2.16.2")
+        compileOnly("su.nightexpress.nightcore:main:2.16.7")
         compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     }
 
