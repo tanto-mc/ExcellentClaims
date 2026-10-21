@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.jspecify.annotations.NullMarked;
 
+import su.nightexpress.excellentclaims.api.ClaimPlugin;
 import su.nightexpress.excellentclaims.api.MessageDispatcher;
+import su.nightexpress.excellentclaims.api.claim.ClaimPermissionAPI;
 import su.nightexpress.excellentclaims.api.rule.EventController;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.block.BlockBurnController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.block.BlockExplodeController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.block.BlockFadeController;
@@ -24,6 +27,8 @@ import su.nightexpress.excellentclaims.rules.evaluation.controller.player.BlockH
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.ItemDropPickupController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerCommandController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerDamageController;
+import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerFlyController;
+import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerGodController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerInteractController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.PlayerTeleportController;
 import su.nightexpress.excellentclaims.rules.evaluation.controller.player.ProjectiveLaunchController;
@@ -32,14 +37,25 @@ import su.nightexpress.excellentclaims.rules.settings.RulesSettings;
 @NullMarked
 public class EventControllerService {
 
-    private final EvaluatorEngine   engine;
-    private final RulesSettings     settings;
-    private final MessageDispatcher dispatcher;
+    private final ClaimPlugin         plugin;
+    private final EvaluatorEngine     engine;
+    private final RulesSettings       settings;
+    private final MessageDispatcher   dispatcher;
+    private final SessionManager      sessionManager;
+    private final ClaimPermissionAPI  permissions;
 
-    public EventControllerService(EvaluatorEngine engine, RulesSettings settings, MessageDispatcher dispatcher) {
+    public EventControllerService(ClaimPlugin plugin,
+                                  EvaluatorEngine engine,
+                                  RulesSettings settings,
+                                  MessageDispatcher dispatcher,
+                                  SessionManager sessionManager,
+                                  ClaimPermissionAPI permissions) {
+        this.plugin = plugin;
         this.engine = engine;
         this.settings = settings;
         this.dispatcher = dispatcher;
+        this.sessionManager = sessionManager;
+        this.permissions = permissions;
     }
 
     public List<EventController> createControllers() {
@@ -69,6 +85,9 @@ public class EventControllerService {
         controllers.add(new PlayerDamageController(this.engine, this.dispatcher));
         controllers.add(new PlayerCommandController(this.engine, this.dispatcher));
         controllers.add(new PlayerTeleportController(this.engine, this.dispatcher));
+
+        controllers.add(new PlayerFlyController(this.plugin, this.engine, this.sessionManager, this.permissions));
+        controllers.add(new PlayerGodController(this.plugin, this.engine, this.sessionManager, this.permissions));
 
         controllers.add(new EntityChangeBlockController(this.engine, this.dispatcher));
         controllers.add(new EntitySpawnController(this.engine));

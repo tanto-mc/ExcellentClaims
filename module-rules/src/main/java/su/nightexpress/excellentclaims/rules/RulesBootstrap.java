@@ -19,6 +19,7 @@ import su.nightexpress.excellentclaims.rules.registrar.DefaultRulesRegistrar;
 import su.nightexpress.excellentclaims.rules.settings.RulesSettingsConfiguration;
 import su.nightexpress.excellentclaims.rules.ui.RuleUIConfiguration;
 import su.nightexpress.nightcore.bridge.key.KeyDomain;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 
 @NullMarked
 public final class RulesBootstrap {
@@ -38,6 +39,9 @@ public final class RulesBootstrap {
 
         rulesContainer.register(RuleRegistry.class, rules);
         rulesContainer.register(RuleResolver.class, module);
+
+        SessionManager sessionManager = container.get(SessionManager.class);
+        rulesContainer.register(SessionManager.class, sessionManager);
 
         RulesLangInjector.inject(plugin);
         RulesPermissionsInjector.inject(plugin);

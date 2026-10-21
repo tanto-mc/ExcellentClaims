@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 import su.nightexpress.excellentclaims.api.claim.Claim;
 import su.nightexpress.excellentclaims.api.claim.ClaimPermissionAPI;
 import su.nightexpress.excellentclaims.api.rule.RulesAPI;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 
 @NullMarked
 public class ExcellentClaimsAPI implements ClaimsAPI {
@@ -17,11 +18,13 @@ public class ExcellentClaimsAPI implements ClaimsAPI {
     private final APIContainer       apiContainer;
     private final ClaimRegistry      claimRegistry;
     private final ClaimPermissionAPI permissions;
+    private final SessionManager     sessionManager;
 
     public ExcellentClaimsAPI(APIContainer apiContainer) {
         this.apiContainer = apiContainer;
         this.claimRegistry = apiContainer.container().get(ClaimRegistry.class);
         this.permissions = apiContainer.container().get(ClaimPermissionAPI.class);
+        this.sessionManager = apiContainer.container().get(SessionManager.class);
     }
 
     @Override
@@ -32,6 +35,11 @@ public class ExcellentClaimsAPI implements ClaimsAPI {
     @Override
     public ClaimPermissionAPI getClaimPermissions() {
         return this.permissions;
+    }
+
+    @Override
+    public SessionManager getSessionManager() {
+        return this.sessionManager;
     }
 
     @Override

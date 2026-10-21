@@ -10,10 +10,13 @@ import su.nightexpress.excellentclaims.api.ClaimsConstants;
 import su.nightexpress.excellentclaims.api.core.DependencyContainer;
 import su.nightexpress.excellentclaims.api.core.SimpleDependencies;
 import su.nightexpress.excellentclaims.api.premium.PremiumFeatures;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
+import su.nightexpress.excellentclaims.core.session.DefaultSessionManager;
 import su.nightexpress.excellentclaims.core.settings.SettingsFactory;
 import su.nightexpress.excellentclaims.engine.command.ReloadCommand;
 import su.nightexpress.excellentclaims.engine.controller.ClaimAutoSaveController;
 import su.nightexpress.excellentclaims.engine.controller.ClaimGreetingsController;
+import su.nightexpress.excellentclaims.engine.controller.PlayerSessionController;
 import su.nightexpress.excellentclaims.engine.controller.WorldLifecycleController;
 import su.nightexpress.excellentclaims.engine.module.EngineModuleConfiguration;
 import su.nightexpress.excellentclaims.engine.placeholders.EnginePlaceholderConfiguration;
@@ -34,6 +37,9 @@ public final class EngineBootstrap {
         ClaimRegistry claims = container.get(ClaimRegistry.class);
         PremiumFeatures features = container.get(PremiumFeatures.class);
 
+        SessionManager sessionManager = new DefaultSessionManager(claims);
+        container.register(SessionManager.class, sessionManager);
+
         ModuleRegistry modules = new ModuleRegistry();
         ClaimEngine engine = new ClaimEngine(plugin, claims, modules);
 
@@ -49,7 +55,8 @@ public final class EngineBootstrap {
 
         engine.addComponent(new ReloadCommand(plugin));
         engine.addComponent(new ClaimAutoSaveController(plugin, modules, settings));
-        engine.addComponent(new ClaimGreetingsController(plugin, claims));
+        engine.addComponent(new PlayerSessionController(plugin, sessionManager));
+        engine.addComponent(new ClaimGreetingsController(plugin, sessionManager));
         engine.addComponent(new WorldLifecycleController(plugin, modules));
 
         return engine;

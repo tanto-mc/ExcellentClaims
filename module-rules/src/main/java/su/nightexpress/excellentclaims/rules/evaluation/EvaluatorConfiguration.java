@@ -5,6 +5,7 @@ import su.nightexpress.excellentclaims.api.ClaimRegistry;
 import su.nightexpress.excellentclaims.api.MessageDispatcher;
 import su.nightexpress.excellentclaims.api.claim.ClaimPermissionAPI;
 import su.nightexpress.excellentclaims.api.core.DependencyContainer;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 import su.nightexpress.excellentclaims.rules.RuleRegistry;
 import su.nightexpress.excellentclaims.rules.RulesModule;
 import su.nightexpress.excellentclaims.rules.settings.RulesSettings;
@@ -20,11 +21,16 @@ public final class EvaluatorConfiguration {
         RuleRegistry rules = container.get(RuleRegistry.class);
         ClaimPermissionAPI permissions = container.get(ClaimPermissionAPI.class);
         MessageDispatcher dispatcher = container.get(MessageDispatcher.class);
+        SessionManager sessionManager = container.get(SessionManager.class);
 
         RulesSettings settings = container.get(RulesSettings.class);
 
         EvaluatorEngine engine = new EvaluatorEngine(rules, claims, permissions);
-        EventControllerService controllerService = new EventControllerService(engine, settings, dispatcher);
+
+        EventControllerService controllerService = new EventControllerService(
+                plugin, engine, settings, dispatcher, sessionManager, permissions
+        );
+
         EventRegisterController registerController = new EventRegisterController(plugin, controllerService);
 
         container.register(EvaluatorEngine.class, engine);

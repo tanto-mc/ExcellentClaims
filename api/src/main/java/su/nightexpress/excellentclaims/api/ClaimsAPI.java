@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 import su.nightexpress.excellentclaims.api.claim.Claim;
 import su.nightexpress.excellentclaims.api.claim.ClaimPermissionAPI;
 import su.nightexpress.excellentclaims.api.rule.RulesAPI;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 
 @NullMarked
 public interface ClaimsAPI {
@@ -20,6 +21,9 @@ public interface ClaimsAPI {
      * @return
      */
     ClaimRegistry getClaimRegistry();
+
+
+    SessionManager getSessionManager();
 
     /**
      * Retrieves the API managing permission nodes, member roles, and access control within claims.

@@ -16,7 +16,9 @@ import su.nightexpress.excellentclaims.api.core.ComponentCore;
 import su.nightexpress.excellentclaims.api.core.DependencyContainer;
 import su.nightexpress.excellentclaims.api.core.EventPublisher;
 import su.nightexpress.excellentclaims.api.core.SimpleDependencies;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 import su.nightexpress.excellentclaims.core.Lang;
+import su.nightexpress.excellentclaims.core.session.DefaultSessionManager;
 import su.nightexpress.excellentclaims.engine.ClaimEngine;
 import su.nightexpress.excellentclaims.engine.EngineBootstrap;
 import su.nightexpress.excellentclaims.highlighter.HighlightConfiguration;
@@ -28,7 +30,6 @@ import su.nightexpress.excellentclaims.rules.RulesBootstrap;
 import su.nightexpress.excellentclaims.rules.RulesModule;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.PluginDetails;
-import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.userdata.UserDataManager;
 
@@ -61,6 +62,7 @@ public class ExcellentClaimsPlugin extends NightPlugin implements ClaimPlugin {
         APIContainer apiContainer = new APIContainer(apiDependencies);
 
         ClaimRegistry claims = new ClaimRegistry();
+        SessionManager sessionManager = new DefaultSessionManager(claims);
 
         dependencies.register(APIContainer.class, apiContainer);
         dependencies.register(ClaimPlugin.class, this);
@@ -69,6 +71,7 @@ public class ExcellentClaimsPlugin extends NightPlugin implements ClaimPlugin {
         dependencies.register(DialogRegistry.class, this.dialogRegistry);
         dependencies.register(UserDataManager.class, this.getUserDataManager());
         dependencies.register(ClaimRegistry.class, claims);
+        dependencies.register(SessionManager.class, sessionManager);
 
         PremiumConfiguration.configure(dependencies);
         AdminBypassModule bypassModule = AdminBypassBoostrap.bootstrap(dependencies);
@@ -94,6 +97,7 @@ public class ExcellentClaimsPlugin extends NightPlugin implements ClaimPlugin {
     public void disable() {
         if (this.core != null) {
             this.core.shutdown();
+
         }
     }
 

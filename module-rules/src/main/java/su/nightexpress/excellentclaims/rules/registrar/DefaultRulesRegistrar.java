@@ -2,6 +2,7 @@ package su.nightexpress.excellentclaims.rules.registrar;
 
 import su.nightexpress.excellentclaims.api.claim.ClaimPermissionAPI;
 import su.nightexpress.excellentclaims.api.core.DependencyContainer;
+import su.nightexpress.excellentclaims.api.session.SessionManager;
 import su.nightexpress.excellentclaims.rules.load.RuleLoader;
 import su.nightexpress.excellentclaims.rules.settings.RulesSettings;
 
@@ -14,6 +15,7 @@ public final class DefaultRulesRegistrar {
         RuleLoader loader = container.get(RuleLoader.class);
         RulesSettings settings = container.get(RulesSettings.class);
         ClaimPermissionAPI permissions = container.get(ClaimPermissionAPI.class);
+        SessionManager sessionManager = container.get(SessionManager.class);
 
         EnvironmentRulesRegistrar.register(loader);
 
@@ -27,7 +29,7 @@ public final class DefaultRulesRegistrar {
         PlayerBlockRulesRegistrar.register(loader, permissions);
         PlayerItemRulesRegistrar.register(loader, permissions);
         PlayerDamageRulesRegistrar.register(loader, permissions);
-        PlayerCommonRulesRegistrar.register(loader, settings, permissions);
+        PlayerCommonRulesRegistrar.register(loader, settings, permissions, sessionManager);
         PlayerEntityRulesRegistrar.register(loader, permissions);
 
         if (settings.isAllowHighFrequencyRules()) {
